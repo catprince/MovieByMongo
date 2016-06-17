@@ -55,7 +55,7 @@ app.get('/movie/:id', function(req, res){
 })
 
 //admin page
-app.get('/admin/movie', function(req, res){
+app.get('/admin/new', function(req, res){
     res.render('admin',{
         title: 'imooc 后台录入页',
         movie: {
