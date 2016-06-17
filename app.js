@@ -4,17 +4,18 @@ var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var _ = require('underscore');
 var Movie = require('./models/movie');
+var User = require('./models/user');
 var app = express();
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
 
-/*var db = mongoose.connect('mongodb://127.0.0.1:27017/MongoDB');
+var db = mongoose.connect('mongodb://127.0.0.1:27017/test');
 db.connection.on("error", function (error) {
     console.log("数据库连接失败：" + error);
 });
 db.connection.on("open", function () {
     console.log("——数据库连接成功！——");
-});*/
+});
 
 app.set('views','./views/pages');
 app.set('view engine','jade');
@@ -159,4 +160,35 @@ app.delete('/admin/list', function(req, res){
 
         })
     }
+})
+
+//signup
+app.post('/user/signup', function(req, res){
+    var _user = req.body.user;//req,param('user')
+    //'/user/signup:id' req.params.id
+    //'/user/signup:124?id=111' req.query.id
+
+    console.log(_user);
+
+    var user = new User(_user);
+    user.save(function(err, user){
+        if (err) {
+            console.log(err);
+        }
+        res.redirect('/admin/userlist');
+    })
+})
+
+//userlist page
+app.get('/admin/userlist', function(req, res){
+    User.fetch(function(err, users){
+        console.log(users);
+        if(err){
+            console.log(err);
+        }
+        res.render('userlist',{
+            title: 'imooc 用户列表页',
+            users: users
+        })
+    })
 })
