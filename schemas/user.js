@@ -30,14 +30,14 @@ UserSchema.pre('save', function(next){
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt){
         if (err) return next(err);
 
-        bcrypt.hash(user.password, salt, function(err, hash){
+        bcrypt.hash(user.password, salt,'', function(err, hash){
             if (err) return next(err);
 
             user.password = hash;
             next();
         })
     })
-    next();
+    //next();
 });
 
 UserSchema.statics = {
