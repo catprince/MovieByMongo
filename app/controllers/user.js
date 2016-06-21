@@ -1,5 +1,12 @@
 var User = require('../models/user');
+
 //signup
+exports.showSignup = function (req, res) {
+    res.render('signup',{
+        title: '注册页面'
+    });
+};
+
 exports.signup = function (req, res) {
     var _user = req.body.user;//req,param('user')
     //'/user/signup:id' req.params.id
@@ -13,14 +20,14 @@ exports.signup = function (req, res) {
             console.log(err);
         }
         if (user) {
-            return res.redirect('/');
+            return res.redirect('/signin');
         } else {
             var user = new User(_user);
             user.save(function (err, user) {
                 if (err) {
                     console.log(err);
                 }
-                res.redirect('/admin/userlist');
+                res.redirect('/');
             })
         }
     });
@@ -41,6 +48,12 @@ exports.list = function (req, res) {
 };
 
 //signin
+exports.showSignin = function (req, res) {
+    res.render('signin',{
+        title: '登录页面'
+    });
+};
+
 exports.signin = function(req, res){
     var _user = req.body.user;
     var name = _user.name;
@@ -52,7 +65,7 @@ exports.signin = function(req, res){
         }
 
         if (!user) {
-            return res.redirect('/');
+            return res.redirect('/signup');
         }
 
         user.comparePassword(password, function(err, isMatch){
@@ -61,11 +74,10 @@ exports.signin = function(req, res){
             }
 
             if (isMatch) {
-                //console.log('password is matched!');
                 req.session.user = user;
                 return res.redirect('/');
             } else {
-                //console.log('password is not matched!')
+                return res.redirect('/signin');
             }
         })
     });
