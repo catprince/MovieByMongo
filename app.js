@@ -10,7 +10,7 @@ var serveStatic = require('serve-static');
 var cookieParser = require('cookie-parser');
 
 
-var dbUrl = 'mongodb://127.0.0.1:27017/test';
+var dbUrl = 'mongodb://127.0.0.1:27017/imooc';
 var db = mongoose.connect(dbUrl);
 //db.connection.on("error", function (error) {
 //    console.log("数据库连接失败：" + error);
