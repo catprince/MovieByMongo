@@ -1,4 +1,5 @@
 var Movie = require('../models/movie');
+var Comment = require('../models/comment');
 var _ = require('underscore');
 
 //detail page
@@ -8,10 +9,14 @@ exports.detail = function (req, res) {
         if (err) {
             console.log(err);
         }
-        res.render('detail', {
-            title: 'imooc ' + movie.title,
-            movie: movie
-        })
+        Comment.find({movie: id}, function (err, comments) {
+            console.log(comments);
+            res.render('detail', {
+                title: 'imooc ' + movie.title,
+                movie: movie,
+                comments: comments
+            })
+        });
     })
 
 }

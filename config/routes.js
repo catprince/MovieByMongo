@@ -1,6 +1,7 @@
 var Index = require('../app/controllers/index');
 var Movie = require('../app/controllers/movie');
 var User = require('../app/controllers/user');
+var Comment = require('../app/controllers/comment');
 
 module.exports = function (app){
     //pre handle user
@@ -20,7 +21,7 @@ module.exports = function (app){
     app.get('/movie/:id', Movie.detail)
     app.get('/admin/movie/new', User.singninRequired, User.adminRequired, Movie.new)
     app.get('/admin/movie/update/:id', User.singninRequired, User.adminRequired, Movie.update)
-    app.post('/admin/movie', User.singninRequired, User.adminRequired, Movie.save)
+    app.post('/admin/movie/new', User.singninRequired, User.adminRequired, Movie.save)
     app.get('/admin/movie/list', User.singninRequired, User.adminRequired, Movie.list)
     app.delete('/admin/movie/list', User.singninRequired, User.adminRequired, Movie.del)
 
@@ -31,5 +32,8 @@ module.exports = function (app){
     app.get('/signin', User.showSignin);
     app.get('/signup', User.showSignup);
     app.get('/logout', User.logout);
+
+    //comment
+    app.post('/user/comment', User.singninRequired, Comment.save);
 };
 
