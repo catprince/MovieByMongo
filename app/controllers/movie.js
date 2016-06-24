@@ -9,14 +9,17 @@ exports.detail = function (req, res) {
         if (err) {
             console.log(err);
         }
-        Comment.find({movie: id}, function (err, comments) {
-            console.log(comments);
-            res.render('detail', {
-                title: 'imooc ' + movie.title,
-                movie: movie,
-                comments: comments
-            })
-        });
+        Comment
+            .find({movie: id})
+            .populate('from', 'name')
+            .exec(function (err, comments) {
+                //console.log(comments);
+                res.render('detail', {
+                    title: 'imooc ' + movie.title,
+                    movie: movie,
+                    comments: comments
+                })
+            });
     })
 
 }
