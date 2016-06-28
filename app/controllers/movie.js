@@ -1,4 +1,5 @@
 var Movie = require('../models/movie');
+var Category = require('../models/category');
 var Comment = require('../models/comment');
 var _ = require('underscore');
 
@@ -27,18 +28,15 @@ exports.detail = function (req, res) {
 
 //admin page
 exports.new = function (req, res) {
-    res.render('admin', {
-        title: 'imooc 后台录入页',
-        movie: {
-            doctor: '',
-            country: '',
-            title: '',
-            year: '',
-            poster: '',
-            language: '',
-            flash: '',
-            summary: ''
+    Category.find({},function(err, categories){
+        if (err) {
+            console.log(err);
         }
+        res.render('admin', {
+            title: 'imooc 后台录入页',
+            categories:categories,
+            movie: {}
+        })
     })
 }
 
@@ -65,8 +63,8 @@ exports.save = function (req, res) {
     var id = req.body.movie._id;
     var movieObj = req.body.movie;
     var _movie;
-    //console.log(movieObj);
-    if (id !== 'undefined') {
+    console.log(movieObj);
+    if (id) {
         Movie.findById(id, function (err, movie) {
             if (err) {
                 console.log(err);
@@ -82,23 +80,25 @@ exports.save = function (req, res) {
             })
         })
     } else {
-        _movie = new Movie({
-            doctor: movieObj.doctor,
-            country: movieObj.country,
-            title: movieObj.title,
-            year: movieObj.year,
-            poster: movieObj.poster,
-            language: movieObj.language,
-            flash: movieObj.flash,
-            summary: movieObj.summary
-        })
+        _movie = new Movie(movieObj);
 
+        var categoryId = _movie.category;
         _movie.save(function (err, movie) {
             if (err) {
                 console.log(err);
             }
 
-            res.redirect('/movie/' + movie._id);
+            Category.findById(categoryId,function (err, category) {
+                if (err) {
+                    console.log(err);
+                }
+                category.movies.push(movie._id);
+
+                category.save(function (err, category) {
+                    res.redirect('/movie/' + movie._id);
+                });
+            });
+
         })
     }
 }

@@ -1,6 +1,5 @@
 var Movie = require('../models/movie');
 var Category = require('../models/category');
-var mongoose = require('mongoose')
 
 exports.index = function (req, res) {
     //console.log(req.session.user);
