@@ -46,14 +46,13 @@ exports.update =  function (req, res) {
 
     if (id) {
         Movie.findById(id, function (err, movie) {
-            if (err) {
-                console.log(err);
-            }
-
-            res.render('admin', {
-                title: 'imooc 后台更新页',
-                movie: movie
-            })
+            Category.find({},function(err, categories){
+                res.render('admin', {
+                    title: 'imooc 后台更新页',
+                    movie: movie,
+                    categories: categories
+                })
+            });
         })
     }
 }
@@ -63,7 +62,7 @@ exports.save = function (req, res) {
     var id = req.body.movie._id;
     var movieObj = req.body.movie;
     var _movie;
-    console.log(movieObj);
+    //console.log(movieObj);
     if (id) {
         Movie.findById(id, function (err, movie) {
             if (err) {

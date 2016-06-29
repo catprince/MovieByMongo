@@ -5,7 +5,12 @@ exports.index = function (req, res) {
     //console.log(req.session.user);
     Category
         .find({})
-        .populate({path:'movies', options:{limit:5}})
+        //.populate({
+        //    path: 'movies',
+        //    //select: 'title poster',
+        //    options: { limit: 5 }
+        //})
+        //.populate('movies','movies')
         .exec(function(err, categories){
             if (err) {
                 console.log(err);
