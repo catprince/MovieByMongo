@@ -23,6 +23,8 @@ app.set('views', './app/views/pages');
 app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded());
 //app.use(express.static(path.join(__dirname,'bower_components')))
+//app.use(express.multipart());
+app.use(require('connect-multiparty')());
 app.use(cookieParser());
 app.use(session({
     secret: 'imooc',
