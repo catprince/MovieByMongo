@@ -23,25 +23,32 @@ exports.index = function (req, res) {
 //search page
 exports.search = function (req, res) {
     var catId = req.query.cat;
-    var page = req.query.p;
-    var index =  page * 2;
+    var page = parseInt(req.query.p, 10);
+    var count = 2;
+    var index =  page * count;
 
     Category
         .find({_id: catId})
         .populate({
             path: 'movies',
             select: 'title poster'
-            //options: { limit: 2, skip: index }
+            //options: { limit: count, skip: index }
         })
         .exec(function(err, categories){
             if (err) {
                 console.log(err);
             }
             var category = categories[0] || {};
+            var movies = category.movies || [];
+            var results = movies.slice(index, index + count);
+
             res.render('results', {
                 title: 'imooc 结果列表页面',
                 keyword: category.name,
-                category: category
+                currentPage: (page + 1),
+                query: 'cat=' + catId,
+                totallPage: Math.ceil(movies.length / count),
+                movies: results
             })
         });
 }
