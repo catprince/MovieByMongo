@@ -41,5 +41,8 @@ module.exports = function (app){
     app.get('/admin/category/new', User.singninRequired, User.adminRequired, Category.new);
     app.post('/admin/category', User.singninRequired, User.adminRequired, Category.save);
     app.get('/admin/category/list', User.singninRequired, User.adminRequired, Category.list);
+
+    //results
+    app.get('/results', Index.search);
 };
 
