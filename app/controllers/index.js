@@ -10,7 +10,7 @@ exports.index = function (req, res) {
         //    //select: 'title poster',
         //    options: { limit: 5 }
         //})
-        //.populate('movies','movies')
+        .populate({path: 'movies'})
         .exec(function(err, categories){
             if (err) {
                 console.log(err);
