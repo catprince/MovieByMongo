@@ -5,9 +5,31 @@ var session = require('express-session');
 var mongoose = require('mongoose');
 var mongoStore = require('connect-mongo')(session);
 var app = express();
+var fs = require('fs');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
 var cookieParser = require('cookie-parser');
+
+//models loading
+var models_path = __dirname + '/app/models';
+var walk = function (path) {
+    fs
+        .readdirSync(path)
+        .forEach(function(file){
+            var newPath = path + '/' + file;
+            var stat = fs.statSync(newPath);
+
+            if (stat.isFile()) {
+                if (/(.*)\.(js|coffee)/.test(file)) {
+                    require(newPath)
+                }
+            } else if (stat.isDirectory()) {
+                walk(newPath);
+            }
+        })
+}
+
+walk(models_path);
 
 
 var dbUrl = 'mongodb://127.0.0.1:27017/imooc';
