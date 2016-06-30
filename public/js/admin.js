@@ -16,7 +16,7 @@ $(function(){
             })
     });
 
-    $("#douban").blur(function(){
+    $('#douban').blur(function(){
         var douban = $(this);
         var id = douban.val();
 

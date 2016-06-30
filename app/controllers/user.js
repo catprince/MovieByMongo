@@ -22,7 +22,7 @@ exports.signup = function (req, res) {
         if (user) {
             return res.redirect('/signin');
         } else {
-            var user = new User(_user);
+            user = new User(_user);
             user.save(function (err, user) {
                 if (err) {
                     console.log(err);
@@ -96,7 +96,7 @@ exports.singninRequired = function (req, res, next) {
     var user = req.session.user;
 
     if (!user) {
-        return res.redirect("/signin")
+        return res.redirect('/signin')
     }
 
     next();
@@ -107,7 +107,7 @@ exports.adminRequired = function (req, res, next) {
     var user = req.session.user;
 
     if (user.role <= 10) {
-        return res.redirect("/signin")
+        return res.redirect('/signin')
     }
 
     next();

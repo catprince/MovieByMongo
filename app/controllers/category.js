@@ -1,4 +1,5 @@
 var Category = require('../models/category');
+var Movie = require('../models/movie');
 var _ = require('underscore');
 
 //admin page
