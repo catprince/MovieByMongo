@@ -1,14 +1,15 @@
 var express = require('express');
 var path = require('path');
 var port = process.env.PORT || 3000;
+var logger = require('morgan');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var mongoStore = require('connect-mongo')(session);
 var app = express();
 var fs = require('fs');
-var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
-var cookieParser = require('cookie-parser');
 
 //models loading
 var models_path = __dirname + '/app/models';
@@ -43,22 +44,28 @@ var db = mongoose.connect(dbUrl);
 
 app.set('views', './app/views/pages');
 app.set('view engine', 'jade');
-app.use(bodyParser.urlencoded());
-//app.use(express.static(path.join(__dirname,'bower_components')))
-//app.use(express.multipart());
-app.use(require('connect-multiparty')());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 app.use(cookieParser());
+
 app.use(session({
     secret: 'imooc',
+    resave: false,
+    saveUninitialized: true,
     store: new mongoStore({
         url: dbUrl,
         collection: 'sessions'
     })
 }));
 
-var logger = require('morgan');
+var env = process.env.NODE_ENV || 'development';
 
-if ('development' === app.get('env') ) {
+if ('development' === env ) {
     app.set('showStackError',true);
     //app.use(express.logger(':method :url :status'));
     app.use(logger(':method :url :status'));

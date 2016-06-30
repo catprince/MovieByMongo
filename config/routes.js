@@ -4,6 +4,9 @@ var User = require('../app/controllers/user');
 var Category = require('../app/controllers/category');
 var Comment = require('../app/controllers/comment');
 
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+
 module.exports = function (app){
     //pre handle user
     app.use(function (req, res, next) {
@@ -22,7 +25,7 @@ module.exports = function (app){
     app.get('/movie/:id', Movie.detail);
     app.get('/admin/movie/new', User.singninRequired, User.adminRequired, Movie.new);
     app.get('/admin/movie/update/:id', User.singninRequired, User.adminRequired, Movie.update);
-    app.post('/admin/movie/new', User.singninRequired, User.adminRequired, Movie.savePoster, Movie.save);
+    app.post('/admin/movie/new', multipartMiddleware, User.singninRequired, User.adminRequired, Movie.savePoster, Movie.save);
     app.get('/admin/movie/list', User.singninRequired, User.adminRequired, Movie.list);
     app.delete('/admin/movie/list', User.singninRequired, User.adminRequired, Movie.del);
 

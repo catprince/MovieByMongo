@@ -4,11 +4,13 @@
   "description": "imooc movie",
   "main": "app.js",
   "dependencies": {
+    "async": "^1.5.2",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.1",
     "connect-mongo": "^1.2.0",
     "connect-multiparty": "^2.0.0",
     "cookie-parser": "^1.4.3",
+    "crypto": "0.0.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "grunt-contrib-jshint": "^1.0.0",
